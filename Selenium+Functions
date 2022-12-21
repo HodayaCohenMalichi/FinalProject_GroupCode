@@ -1,0 +1,36 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class Selenium {
+    // Driver
+    static WebDriver driver;
+
+    public Selenium() {
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\hodco\\OneDrive\\Desktop\\chromedriver.exe");
+        this.driver = new ChromeDriver();
+    }
+
+    // Functionality
+    public WebElement getElement(String selector) {
+        WebElement element = this.driver.findElement(By.cssSelector(selector));
+        return element;
+    }
+
+    // Roye- Functions
+    public WebElement getElementXPath(String selector) {
+        WebElement xpath = this.driver.findElement(By.xpath(selector));
+        return xpath;
+    }
+
+    public WebElement getElementClass(String selector) {
+        WebElement byClass = this.driver.findElement(By.className(selector));
+        return byClass;
+    }
+
+    public WebElement getElementID(String selector) {
+        WebElement byID = this.driver.findElement(By.id(selector));
+        return byID;
+    }
+}
