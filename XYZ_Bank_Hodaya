@@ -1,0 +1,170 @@
+import org.apache.commons.io.FileUtils;
+import org.junit.Assert;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import java.io.File;
+import java.io.IOException;
+
+public class XYZ_bank_Hodaya {
+
+    @Test
+    public void SanityTest() throws InterruptedException, IOException {
+        String url = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+        String expected = "XYZ Bank";
+
+        Selenium selenium1 = new Selenium();
+        selenium1.driver.get(url);
+        Thread.sleep(1000);
+        Selenium.driver.manage().window().maximize();
+        System.out.println(selenium1.driver.getTitle());
+        Assert.assertEquals(expected, selenium1.driver.getTitle());
+
+        //ScreenShot & close
+        File normal = ((ChromeDriver) Selenium.driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(normal, new File("C:\\Users\\hodco\\OneDrive\\Desktop\\ScreenShotSanityTest.png"));
+        selenium1.driver.quit();
+    }
+
+    // כנס למערכת בתור מנהל תעשה הוספה ללקוח חדש, תחזור למסך של המנהל ותבדוק שהלקוח שהכנס אכן נמצא
+    @Test
+    public void AddCustomerP_test() throws InterruptedException, IOException {
+        // Phase 1 Selectors
+        String url = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+        String managerLoginSelector = "body > div > div > div.ng-scope > div > div.borderM.box.padT20 > div:nth-child(3) > button";
+        String addCustomerSelector = "body > div > div > div.ng-scope > div > div.center > button:nth-child(1)";
+        String firstNameSelector = "body > div > div > div.ng-scope > div > div.ng-scope > div > div > form > div:nth-child(1) > input";
+        String lastNameSelector = "body > div > div > div.ng-scope > div > div.ng-scope > div > div > form > div:nth-child(2) > input";
+        String postCodeSelector = "body > div > div > div.ng-scope > div > div.ng-scope > div > div > form > div:nth-child(3) > input";
+        String submitSelector = "body > div > div > div.ng-scope > div > div.ng-scope > div > div > form > button";
+
+        // Table
+        String tableSelector = "/html/body/div/div/div[2]/div/div[2]/div";
+
+        //Inputs
+        String firstNameInput = "Lord";
+        String lastNameInput = "Voldemort";
+        String postCodeInput = "101010";
+
+        // Phase 2 Selectors
+        String customersSelector = "body > div > div > div.ng-scope > div > div.center > button:nth-child(3)";
+        String firstNameTableSelector = "body > div > div > div.ng-scope > div > div.ng-scope > div > div > table > tbody > tr:nth-child(6) > td:nth-child(1)";
+        String expected = "Voldemort";
+
+        // selenium
+        Selenium selenium1 = new Selenium();
+        selenium1.driver.get(url);
+
+        // Open window- Phase 1
+        Thread.sleep(1000);
+        Selenium.driver.manage().window().maximize();
+        Thread.sleep(1000);
+        selenium1.getElement(managerLoginSelector).click();
+        Thread.sleep(1000);
+        selenium1.getElement(addCustomerSelector).click();
+        Thread.sleep(1000);
+        selenium1.getElement(firstNameSelector).sendKeys(firstNameInput);
+        Thread.sleep(1000);
+        selenium1.getElement(lastNameSelector).sendKeys(lastNameInput);
+        Thread.sleep(1000);
+        selenium1.getElement(postCodeSelector).sendKeys(postCodeInput);
+        Thread.sleep(1000);
+        selenium1.getElement(submitSelector).click();
+        Thread.sleep(1000);
+
+        // Press OK on alert window
+        selenium1.driver.switchTo().alert().accept();
+
+        // Open window- Phase 2
+        Thread.sleep(1000);
+        selenium1.getElement(customersSelector).click();
+        Thread.sleep(1000);
+
+        // Extract actual value from Customers Table
+        String actual = Selenium.driver.findElement(By.xpath(tableSelector)).getText();
+        Thread.sleep(1000);
+        Assert.assertTrue(actual.contains("Voldemort"));
+        Thread.sleep(1000);
+
+        // Another Option
+        // String actual = selenium1.getElement(firstNameTableSelector).getText();
+        //Assert.assertEquals(expected, actual);
+
+
+// Scroll down in table
+        //  WebElement element = Selenium1.driver.findElement(By.xpath("/html/body/div/div/div[2]/div/div[2]/div"));
+        // JavascriptExecutor js = (JavascriptExecutor)Selenium1.driver;
+        //js.executeScript("document.querySelector(body > div > div > div.ng-scope > div > div.ng-scope > div > div > table).scrollTop=250");
+
+        //  Actions act=new Actions(Selenium1.driver);
+        //  act.sendKeys(Keys.PAGE_DOWN).build().perform().;
+
+        //ScreenShot & Close
+        Thread.sleep(1000);
+        File normal = ((ChromeDriver) Selenium.driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(normal, new File("C:\\Users\\hodco\\OneDrive\\Desktop\\ScreenShotTest3.png"));
+        selenium1.driver.quit();
+    }
+
+    // כנס למערכת בהרשאת לקוח תנסה לעשות העברה יותר גדולה מהיתרה בחשבון ותבדוק שזה לא נותן לנו לעשות את ההעברה בדיקה נגטיבית
+    @Test
+    public void WithdrawlN_Test() throws InterruptedException, IOException {
+        // Phase 1 Selectors
+        String url = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+        String customerLoginSelector = "body > div > div > div.ng-scope > div > div.borderM.box.padT20 > div:nth-child(1) > button";
+        String customerSelectSelector = "#userSelect";
+        String HarryPotterSelector = "#userSelect > option:nth-child(3)";
+        String LoginSelector = "body > div > div > div.ng-scope > div > form > button";
+
+        // Phase 2 Selectors
+        String withdrawlSelector = "body > div > div > div.ng-scope > div > div:nth-child(5) > button:nth-child(3)";
+        String amountBoxSelector = "body > div > div > div.ng-scope > div > div.container-fluid.mainBox.ng-scope > div > form > div > input";
+        String submitSelector = "body > div > div > div.ng-scope > div > div.container-fluid.mainBox.ng-scope > div > form > button";
+        String errorMessageSelector = "body > div > div > div.ng-scope > div > div.container-fluid.mainBox.ng-scope > div > span";
+
+        // Input
+        String amountWithdrawnInput = "5000";
+        // Variable
+        String expectedError = "Transaction Failed. You can not withdraw amount more than the balance.";
+
+        // Selenium
+        Selenium selenium1 = new Selenium();
+        selenium1.driver.get(url);
+
+        // Open Window- Phase 1
+        Thread.sleep(1000);
+        Selenium.driver.manage().window().maximize();
+        Thread.sleep(1000);
+        selenium1.getElement(customerLoginSelector).click();
+        Thread.sleep(1000);
+        selenium1.getElement(customerSelectSelector).click();
+        Thread.sleep(1000);
+        selenium1.getElement(HarryPotterSelector).click();
+        Thread.sleep(1000);
+        selenium1.getElement(LoginSelector).click();
+        Thread.sleep(1000);
+
+        // Open Window- Phase 2
+        selenium1.getElement(withdrawlSelector).click();
+        Thread.sleep(1000);
+        selenium1.getElement(amountBoxSelector).sendKeys(amountWithdrawnInput);
+        Thread.sleep(1000);
+        selenium1.getElement(submitSelector).click();
+        Thread.sleep(1000);
+
+        // Test N Result
+        Thread.sleep(1000);
+        String actualError = selenium1.getElement(errorMessageSelector).getText();
+        Thread.sleep(1000);
+        Assert.assertEquals(expectedError, actualError);
+        Thread.sleep(1000);
+
+        // ScreenShot & Close
+        File normal = ((ChromeDriver) Selenium.driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFile(normal, new File("C:\\Users\\hodco\\OneDrive\\Desktop\\ScreenShotTest7.png"));
+        Thread.sleep(1000);
+        selenium1.driver.quit();
+
+    }}
