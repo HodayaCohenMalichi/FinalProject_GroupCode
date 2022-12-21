@@ -19,6 +19,11 @@ public class Selenium {
     }
 
     // Roye- Functions
+      public WebElement getElementCss(String selector){
+        WebElement elements = this.driver.findElement(By.cssSelector(selector));
+        return elements;
+    }
+    
     public WebElement getElementXPath(String selector) {
         WebElement xpath = this.driver.findElement(By.xpath(selector));
         return xpath;
